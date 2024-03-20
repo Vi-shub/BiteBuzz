@@ -12,9 +12,9 @@ app.use(cors());
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
-
+// cors
 app.use(express.json());
-// Connect to MongoDB
+// Connect to MongoDB 
 const connection = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
