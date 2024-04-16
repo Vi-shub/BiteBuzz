@@ -1,34 +1,54 @@
 import express from "express";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-
-import imageRoute from "./routes/image.js";
-import userRoute from "./routes/user.js";
-const app = express();
-dotenv.config();
+import * as dotenv from "dotenv";
 import cors from "cors";
-const port = process.env.PORT || 8000;
+import mongoose from "mongoose";
+import UserRoutes from "./routes/User.js";
+import FoodRoutes from "./routes/Food.js";
+dotenv.config();
+
+const app = express();
 app.use(cors());
-app.get("/", (req, res) => {
-    res.send("Hello World!");
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true })); // for form data
+
+app.use("/api/user/", UserRoutes);
+app.use("/api/food/", FoodRoutes);
+
+// error handler
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  const message = err.message || "Something went wrong";
+  return res.status(status).json({
+    success: false,
+    status,
+    message,
+  });
 });
-// cors
-app.use(express.json());
-// Connect to MongoDB 
-const connection = async () => {
+
+app.get("/", async (req, res) => {
+  res.status(200).json({
+    message: "Hello developers from GFG",
+  });
+});
+
+const connectDB = () => {
+  mongoose.set("strictQuery", true);
+  mongoose
+    .connect(process.env.MONGODB_URL)
+    .then(() => console.log("Connected to Mongo DB"))
+    .catch((err) => {
+      console.error("failed to connect with mongo");
+      console.error(err);
+    });
+};
+
+const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB connected");
+    connectDB();
+    app.listen(8080, () => console.log("Server started on port 8080"));
   } catch (error) {
-    console.error("MongoDB connection error", error);
+    console.log(error);
   }
 };
-connection();
-app.use("/api/v1/all", imageRoute);
-app.use("/api/v1/user", userRoute);
-app.use(express.json({limit: "3mb"}));
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-    }
-);
+startServer();
