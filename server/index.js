@@ -27,7 +27,7 @@ app.use((err, req, res, next) => {
 
 app.get("/", async (req, res) => {
   res.status(200).json({
-    message: "Hello developers from GFG",
+    message: "Test API",
   });
 });
 
@@ -52,3 +52,18 @@ const startServer = async () => {
 };
 
 startServer();
+  
+[
+  {
+    "name": "Chicken Curry",
+    "desc": "Spicy chicken curry made with fresh chicken and spices from the south of India. Served with rice. A must-try!",
+    "img": "https://www.kitchensanctuary.com/wp-content/uploads/2022/09/Air-Fryer-Chicken-Curry-square-FS-36.jpg",
+    "price": {
+      "org": 120.00,
+      "mrp": 300.00,
+      "off": 12.00
+    },
+    "ingredients": ["chicken", "rice", "spices", "oil", "onion", "tomato"],
+    "category":["Curry", "Non-Veg"]
+    }
+]

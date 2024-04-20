@@ -227,6 +227,11 @@ const Cart = () => {
 
   const addCart = async (id) => {
     const token = localStorage.getItem("krist-app-token");
+    console.log("Retrieving token for use in addCart:", token);  // Ensure this is not null
+    if (!token) {
+      console.log("No token found in localStorage");
+      return;  // Exit the function if no token is available
+    }
     await addToCart(token, { productId: id, quantity: 1 })
       .then((res) => {
         setReload(!reload);
@@ -241,6 +246,7 @@ const Cart = () => {
         );
       });
   };
+  
 
   const removeCart = async (id, quantity, type) => {
     const token = localStorage.getItem("krist-app-token");
