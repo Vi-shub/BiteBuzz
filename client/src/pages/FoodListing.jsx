@@ -11,7 +11,7 @@ const Container = styled.div`
   height: 100%;
   overflow-y: scroll;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Align items at the top */
   flex-direction: row;
   gap: 30px;
   @media (max-width: 700px) {
@@ -22,7 +22,6 @@ const Container = styled.div`
 `;
 const Filters = styled.div`
   padding: 20px 16px;
-  flex: 1;
   width: 100%;
   max-width: 300px;
   @media (max-width: 700px) {
