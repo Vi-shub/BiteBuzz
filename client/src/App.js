@@ -11,6 +11,7 @@ import FoodDetails from "./pages/FoodDetails";
 import FoodListing from "./pages/FoodListing";
 import { useSelector } from "react-redux";
 import Contact from "./pages/Contact";
+import Clock from "./components/Clock";
 
 const Container = styled.div``;
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/dishes/:id" exact element={<FoodDetails />} />
             <Route path="/dishes" exact element={<FoodListing />} />
             <Route path="/contact" exact element={<Contact/>} />
+            <Route path="/time" element={<Clock/>} />
           </Routes>
           {openAuth && (
             <Authentication setOpenAuth={setOpenAuth} openAuth={openAuth} />

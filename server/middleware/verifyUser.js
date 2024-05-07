@@ -25,7 +25,7 @@ import { createError } from "../error.js";
 export const verifyToken = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
+    //console.log(authHeader);
     if (!authHeader) {
       return next(createError(401, "Authorization header is missing!"));
     }

@@ -14,7 +14,7 @@ export const userSlice = createSlice({
     loginSuccess: (state, action) => {
       state.currentUser = action.payload.user;
       localStorage.setItem("krist-app-token", action.payload.token);
-      console.log("Token set in localStorage:", action.payload.token);
+      //console.log("Token set in localStorage:", action.payload.token);
     },
     
   

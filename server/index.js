@@ -31,6 +31,19 @@ app.get("/", async (req, res) => {
   });
 });
 
+app.get('/api/time', async (req, res) => {
+  try {
+      // Use dynamic import for node-fetch
+      const fetch = await import('node-fetch');
+      const response = await fetch.default('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
+      const data = await response.json();
+      res.json({ time: data.datetime });
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 const connectDB = () => {
   mongoose.set("strictQuery", true);
   mongoose
