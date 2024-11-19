@@ -2,6 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
+import { createProxyMiddleware } from "http-proxy-middleware"; // Import http-proxy-middleware
 import UserRoutes from "./routes/User.js";
 import FoodRoutes from "./routes/Food.js";
 dotenv.config();
@@ -9,7 +10,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true })); // for form data
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user/", UserRoutes);
 app.use("/api/food/", FoodRoutes);
@@ -44,6 +45,26 @@ app.get('/api/time', async (req, res) => {
   }
 });
 
+const servers = [
+  'http://localhost:8001',  
+  'http://localhost:8002',
+];
+
+let currentServerIndex = 0;
+
+// Round-robin load balancer middleware
+const roundRobinBalancer = (req, res, next) => {
+  const target = servers[currentServerIndex];
+  currentServerIndex = (currentServerIndex + 1) % servers.length; // Cycle through servers
+  createProxyMiddleware({
+    target,
+    changeOrigin: true,
+  })(req, res, next);
+};
+
+// Use round-robin load balancer middleware for all routes
+app.use(roundRobinBalancer);
+
 const connectDB = () => {
   mongoose.set("strictQuery", true);
   mongoose
@@ -64,7 +85,7 @@ const startServer = async () => {
   }
 };
 
-startServer();
+startServer();``
   
 [
   {

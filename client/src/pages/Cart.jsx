@@ -150,6 +150,7 @@ const Cart = () => {
     phoneNumber: "",
     completeAddress: "",
   });
+  
 
   const getProducts = async () => {
     setLoading(true);
@@ -421,7 +422,7 @@ const Cart = () => {
                       />
                     </div>
                   </Delivery>
-                  <Delivery>
+                  {/* <Delivery>
                     Payment Details:
                     <div>
                       <TextInput small placeholder="Card Number" />
@@ -436,7 +437,7 @@ const Cart = () => {
                       </div>
                       <TextInput small placeholder="Card Holder name" />
                     </div>
-                  </Delivery>
+                  </Delivery> */}
                   <Button
                     text="Pace Order"
                     small

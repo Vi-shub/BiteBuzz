@@ -162,22 +162,66 @@ export const placeOrder = async (req, res, next) => {
   }
 };
 
+// export const getAllOrders = async (req, res, next) => {
+//   try {
+//     const { productId } = req.body;
+//     const userJWT = req.user;
+//     const user = await User.findById(userJWT.id);
+//     if (!user.favourites.includes(productId)) {
+//       user.favourites.push(productId);
+//       await user.save();
+//     }
+//     return res
+//       .status(200)
+//       .json({ message: "Product fetched successfully", user });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 export const getAllOrders = async (req, res, next) => {
   try {
-    const { productId } = req.body;
     const userJWT = req.user;
-    const user = await User.findById(userJWT.id);
-    if (!user.favourites.includes(productId)) {
-      user.favourites.push(productId);
-      await user.save();
+    //console.log(userJWT)
+
+    // Fetch all orders linked to the logged-in user
+    const orders = await Orders.find({ user: userJWT.id })
+      .populate("products.product", "name price description") // Populate product details
+      .sort({ createdAt: -1 }); // Sort by latest orders
+      //console.log(orders)
+    if (orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
     }
-    return res
-      .status(200)
-      .json({ message: "Product added to favorites successfully", user });
+
+    return res.status(200).json({ message: "Orders fetched successfully", orders });
+    
   } catch (err) {
     next(err);
   }
 };
+
+// export const getAllOrders = async (req, res, next) => {
+//   try {
+//     const userJWT = req.user; // Extract user info from the JWT
+//     const user = await User.findById(userJWT.id);
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     // Fetch all orders for the user
+//     const orders = await Orders.find({ user: user._id }).populate("products.product"); // Populate product details
+
+//     return res.status(200).json({
+//       message: "Orders fetched successfully",
+//       orders,
+//     });
+//   } catch (err) {
+//     next(err); // Pass the error to the error-handling middleware
+//   }
+// };
+
+
 
 //Favorites
 
